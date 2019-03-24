@@ -9,8 +9,8 @@
 │   ├── discovery.py
 │   ├── pisight.py
 │   ├── pisight.py~
-│   ├── sight.py
-│   └── tiny_server.py
+│   ├── tiny_server.py
+│   └── tx.sh
 ├── polyglots
 │   ├── aes.py
 │   ├── glot.py
