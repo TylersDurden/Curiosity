@@ -2,9 +2,10 @@ from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import hashlib
 import threading
+import pisight
 import socket
 import time
-import sys
+import os
 
 
 class Server:
@@ -17,7 +18,7 @@ class Server:
     looping = False
     START = 0
 
-    EVENT_TABLE = {'START': session_key}
+
 
     def __init__(self, run_time, timeout):
         self.initialize(run_time)
@@ -39,18 +40,30 @@ class Server:
             try:
                 client, address = server_sock.accept()
                 print "Accepted connection from %s:%d" % (address[0], address[1])
-                threading.Thread(target=self.request_handler, args=(client,))
+                threading.Thread(target=self.request_handler, args=(client,)).start()
             except socket.error and KeyboardInterrupt:
                 server_sock.close()
         server_sock.close()
         return 0
 
+    def session_start(self):
+        return self.session_key
+
+    def snap():
+        print "Snapping Image..."
+        pisight.snap()
+        return hashlib.sha256(str(time.time())).digest()
+
     def request_handler(self, client):
-        request = client.recv(1024)
-        print request
-        if str(request) in self.EVENT_TABLE.keys():
-            client.send(self.EVENT_TABLE[str(request)])
+        EVENT_TABLE = {'START': self.session_start,
+                       self.session_key + '=SNAP': self.snap}
+
+        request = str(client.recv(1024))
+        if str(request) in EVENT_TABLE.keys():
+            client.send(EVENT_TABLE[str(request)]())
         client.close()
+        return True
+
 
 
 Server(360, 5)
