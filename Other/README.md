@@ -1,5 +1,5 @@
 # Other
-* **matriyshka.py**
+* **matroyshka.py**
 
 In the spirit of steganography, this python script takes
 a video file as input, creates many still images. Then

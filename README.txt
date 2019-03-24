@@ -2,9 +2,13 @@
 |________CURIOSITY_________|
 ├── Other
 │   ├── herm.mp4
-│   └── matroyshka.py
+│   ├── matroyshka.py
+│   ├── PreProcessing.png
+│   └── README.md
 ├── Pi
 │   ├── discovery.py
+│   ├── pisight.py
+│   ├── pisight.py~
 │   ├── sight.py
 │   └── tiny_server.py
 ├── polyglots
@@ -14,6 +18,6 @@
 │   ├── README.md
 │   ├── transformer.py
 │   └── transformer.pyc
-└── README.txt---------------|
-3 directories, 12 files      |
+└── README.txt
+3 directories, 16 files------|
 =============================|
