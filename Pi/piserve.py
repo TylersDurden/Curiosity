@@ -18,7 +18,7 @@ class Server:
     looping = False
     START = 0
 
-
+    token = ''
 
     def __init__(self, run_time, timeout):
         self.initialize(run_time)
@@ -49,14 +49,26 @@ class Server:
     def session_start(self):
         return self.session_key
 
-    def snap():
-        print "Snapping Image..."
-        pisight.snap()
-        return hashlib.sha256(str(time.time())).digest()
+    def check_for_image(self):
+        if os.path.isfile('test.png'):
+            return os.getcwd()+'/test.png'
+        else:
+            return
+
+    def remove(self):
+        os.remove('test.png')
+        return "Good Stuff. All set on this end."
+
+    def snap(self):
+        os.system('raspistill -t 1 -vf -hf -rot 90 -o test.png -e png')
+        self.token = hashlib.sha256(str(time.time())).digest()
+        return self.token
 
     def request_handler(self, client):
         EVENT_TABLE = {'START': self.session_start,
-                       self.session_key + '=SNAP': self.snap}
+                       self.session_key + '=SNAP': self.snap,
+                       self.token: self.check_for_image,
+                       self.session_key: self.remove}
 
         request = str(client.recv(1024))
         if str(request) in EVENT_TABLE.keys():

@@ -6,8 +6,7 @@ def snap():
     fname = 'test.png'
     ext = 'png'
     # Snap Image
-    snap_cmd = 'raspistill -t 1 -vf -hf -rot 90 -o ' + fname + ' -e ' + ext
-    os.system(snap_cmd)
+    os.system('raspistill -t 1 -vf -hf -rot 90 -o ' + fname + ' -e ' + ext)
 
 
 def transfer():
