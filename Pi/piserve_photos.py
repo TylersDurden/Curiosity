@@ -1,15 +1,13 @@
-from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import hashlib
 import threading
-import pisight
 import socket
 import time
 import os
 
 
 class Server:
-    # Define a private session key
+    # Define a shared session secret
     session_key = get_random_bytes(128)
     # Server Settings
     bind_addr = '0.0.0.0'
@@ -17,7 +15,6 @@ class Server:
     run_time = 0.
     looping = False
     START = 0
-
     token = ''
 
     def __init__(self, run_time, timeout):
@@ -47,20 +44,25 @@ class Server:
         return 0
 
     def session_start(self):
+        print '\t* Session Key Generated'
         return self.session_key
 
-    def check_for_image(self):
+    @staticmethod
+    def check_for_image():
         if os.path.isfile('test.png'):
             return os.getcwd()+'/test.png'
         else:
             return
 
-    def remove(self):
+    @staticmethod
+    def remove():
+        print "Transferring test.png "
         os.remove('test.png')
         return "Good Stuff. All set on this end."
 
     def snap(self):
-        os.system('raspistill -t 1 -vf -hf -rot 90 -o test.png -e png')
+        print "\t* Snapping Image"
+        os.system('raspistill -t 1 -vf -hf -f -rot 90 -o test.png -e png')
         self.token = hashlib.sha256(str(time.time())).digest()
         return self.token
 
@@ -77,5 +79,9 @@ class Server:
         return True
 
 
+def main():
+    Server(360, 5)
 
-Server(360, 5)
+
+if __name__ == '__main__':
+    main()
